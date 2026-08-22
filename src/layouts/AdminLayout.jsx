@@ -58,9 +58,18 @@ const AdminLayout = () => {
           <p className="text-xs text-slate-300">
             Your account ({user.email}) does not have administrative privileges to access this area.
           </p>
-          <Link to="/" className="inline-block px-6 py-2.5 bg-gentora-emerald text-white font-bold text-xs rounded-xl shadow">
-            Return to Customer Storefront
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <button
+              onClick={() => { logout(); navigate('/admin/login'); }}
+              className="w-full sm:w-auto px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout & Login as Admin</span>
+            </button>
+            <Link to="/" className="w-full sm:w-auto px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs rounded-xl shadow transition">
+              Return to Storefront
+            </Link>
+          </div>
         </div>
       </div>
     );
