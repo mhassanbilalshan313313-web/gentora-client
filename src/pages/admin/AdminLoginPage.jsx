@@ -12,8 +12,13 @@ const AdminLoginPage = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  React.useEffect(() => {
+    if (user) {
+      navigate('/admin', { replace: true });
+    }
+  }, [user, navigate]);
+
   if (user) {
-    navigate('/admin');
     return null;
   }
 
