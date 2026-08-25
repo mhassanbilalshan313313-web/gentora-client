@@ -675,25 +675,25 @@ const HomePage = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/50 via-slate-950/15 to-transparent z-10" />
 
         {/* Slide Content - Left-Aligned Modern Shopify Fashion Store Layout */}
-        <div className="container mx-auto px-6 lg:px-12 relative z-20 py-20 lg:py-28">
-          <div className="max-w-xl text-left space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/40 border border-white/20 text-gentora-gold text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-20 py-14 sm:py-20 lg:py-28">
+          <div className="max-w-xl text-left space-y-4 sm:space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-slate-950/40 border border-white/20 text-gentora-gold text-[11px] sm:text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-sm">
               <Sparkles className="w-3.5 h-3.5" />
               <span>{activeSlide.badgeText || 'Gentora Festive Collection 2026'}</span>
             </div>
 
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight drop-shadow-md">
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.15] tracking-tight drop-shadow-md">
               {activeSlide.heading}
             </h1>
 
-            <p className="text-base sm:text-lg text-slate-100 font-normal leading-relaxed max-w-lg drop-shadow-sm">
+            <p className="text-xs sm:text-base lg:text-lg text-slate-100 font-normal leading-relaxed max-w-lg drop-shadow-sm">
               {activeSlide.subheading}
             </p>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 pt-2">
               <Link
                 to={activeSlide.btnLink || '/shop'}
-                className="px-8 py-4 bg-gentora-emerald hover:bg-emerald-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-xl hover:shadow-emerald-900/40 flex items-center gap-2 group/btn"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-gentora-emerald hover:bg-emerald-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-xl hover:shadow-emerald-900/40 flex items-center justify-center gap-2 group/btn"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>{activeSlide.btnText || 'Explore Unstitched Fabrics'}</span>
@@ -702,7 +702,7 @@ const HomePage = () => {
               {activeSlide.secondaryBtnText && (
                 <Link
                   to={activeSlide.secondaryBtnLink || '/shop?isSale=true'}
-                  className="px-8 py-4 bg-slate-950/40 hover:bg-slate-950/60 text-white border border-white/30 font-bold text-xs uppercase tracking-wider rounded-xl transition backdrop-blur-md flex items-center gap-2 shadow-lg"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-slate-950/40 hover:bg-slate-950/60 text-white border border-white/30 font-bold text-xs uppercase tracking-wider rounded-xl transition backdrop-blur-md flex items-center justify-center gap-2 shadow-lg"
                 >
                   <span>{activeSlide.secondaryBtnText}</span>
                 </Link>
@@ -837,21 +837,21 @@ const HomePage = () => {
 
       {/* 4. PROMOTIONAL BANNER */}
       <section className="container mx-auto px-4 lg:px-8">
-        <div className="relative rounded-3xl overflow-hidden bg-gentora-emerald text-white p-8 lg:p-14 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-4 max-w-xl z-10">
-            <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-bold uppercase tracking-wider text-amber-200">
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gentora-emerald text-white p-6 sm:p-8 lg:p-14 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
+          <div className="space-y-3 sm:space-y-4 max-w-xl z-10 w-full text-left">
+            <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider text-amber-200">
               {promoSettings.promoBannerBadge}
             </span>
-            <h3 className="font-serif text-3xl lg:text-4xl font-extrabold leading-tight">
+            <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight">
               {promoSettings.promoBannerTitle}
             </h3>
-            <p className="text-slate-200 text-sm leading-relaxed">
+            <p className="text-slate-200 text-xs sm:text-sm leading-relaxed">
               {promoSettings.promoBannerSubtitle}
             </p>
             <div className="pt-2">
               <Link
                 to={promoSettings.promoBannerBtnLink || '/shop?isSale=true'}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gentora-gold hover:bg-amber-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gentora-gold hover:bg-amber-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg"
               >
                 <span>{promoSettings.promoBannerBtnText}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -912,14 +912,14 @@ const HomePage = () => {
       )}
 
       {/* 6. BRAND VALUE PROPOSITIONS */}
-      <section className="bg-slate-900 text-white py-16">
+      <section className="bg-slate-900 text-white py-12 sm:py-16">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="font-serif text-2xl lg:text-3xl font-bold text-white">Why Pakistani Men Choose Gentora</h2>
             <p className="text-xs text-slate-400 mt-2">Crafted with uncompromising craftsmanship and traditional distinction.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 text-center">
             <div className="p-6 rounded-2xl bg-slate-800/60 border border-slate-700/50 flex flex-col items-center">
               <Award className="w-10 h-10 text-gentora-gold mb-4" />
               <h3 className="font-bold text-sm text-white mb-2">Unmatched Craftsmanship</h3>

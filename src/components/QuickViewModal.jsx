@@ -37,8 +37,8 @@ const QuickViewModal = ({ product, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
-      <div className="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden relative border border-slate-100 flex flex-col md:flex-row max-h-[90vh]">
+    <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-in fade-in overflow-y-auto">
+      <div className="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden relative border border-slate-100 flex flex-col md:flex-row max-h-[90vh] overflow-y-auto my-auto">
         {/* Close button */}
         <button
           onClick={onClose}

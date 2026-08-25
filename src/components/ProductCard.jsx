@@ -120,7 +120,7 @@ const ProductCard = ({ product, onQuickView }) => {
                 e.stopPropagation();
                 onQuickView(product);
               }}
-              className="p-2 rounded-full bg-white/80 text-slate-700 hover:bg-white hover:text-gentora-emerald backdrop-blur-md transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100"
+              className="p-2 rounded-full bg-white/80 text-slate-700 hover:bg-white hover:text-gentora-emerald backdrop-blur-md transition-all duration-200 shadow-sm opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
               title="Quick View"
             >
               <Eye className="w-4 h-4" />
@@ -130,7 +130,7 @@ const ProductCard = ({ product, onQuickView }) => {
 
         {/* Quick Add To Cart Drawer Hover Button */}
         {!isOutOfStock && (
-          <div className="absolute bottom-3 left-3 right-3 z-10 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+          <div className="absolute bottom-3 left-3 right-3 z-10 opacity-100 sm:opacity-0 sm:translate-y-4 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 transition-all duration-300">
             <button
               onClick={handleAddToCart}
               disabled={adding}
