@@ -91,11 +91,11 @@ const SampleRequestModal = ({ product, config, onClose }) => {
               <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                 Request Confirmed
               </span>
-              <h3 className="font-serif text-2xl font-bold text-slate-900 mt-2">
-                Sample Order Placed!
+              <h3 className="font-serif text-xl font-bold text-slate-900 mt-2">
+                Sample Order Submitted!
               </h3>
-              <p className="text-xs text-slate-500 mt-1">
-                Your physical fabric swatch request has been submitted successfully.
+              <p className="text-xs text-slate-700 mt-2 font-medium leading-relaxed bg-amber-50 p-3 rounded-xl border border-amber-200 text-amber-950">
+                Your Fabric Sample Request has been submitted successfully. Once you receive the sample, if you decide to purchase this same fabric, your PKR 150 sample fee will be deducted from your final order.
               </p>
             </div>
 
@@ -118,14 +118,15 @@ const SampleRequestModal = ({ product, config, onClose }) => {
                 <span className="font-mono font-bold text-slate-800">{successData.phone}</span>
               </div>
               <div className="flex justify-between pt-2 border-t font-bold">
-                <span className="text-slate-700">Courier Charge (COD):</span>
-                <span className="text-gentora-emerald">Rs. {successData.totalAmount.toLocaleString()}</span>
+                <span className="text-slate-700">Sample Fee (COD):</span>
+                <span className="text-gentora-emerald">PKR 150</span>
               </div>
             </div>
 
-            <p className="text-[11px] text-slate-400 italic">
-              Our fulfillment team will process your sample swatch and dispatch it via express courier.
-            </p>
+            <div className="p-3 bg-slate-100 rounded-xl text-[11px] text-slate-600 leading-relaxed text-left">
+              <span className="font-bold block text-slate-800">Notice:</span>
+              <span>Sample Fee: PKR 150 (Cash on Delivery). If you purchase the same fabric after receiving the sample, the PKR 150 sample fee will be deducted from your final order.</span>
+            </div>
 
             <button
               onClick={onClose}
@@ -157,20 +158,15 @@ const SampleRequestModal = ({ product, config, onClose }) => {
               </div>
             </div>
 
-            {/* Pricing Summary Banner */}
-            <div className="bg-amber-50 border border-amber-200 p-3 rounded-2xl text-xs space-y-1">
-              <div className="flex justify-between items-center text-amber-900 font-bold">
-                <span>Fabric Swatch Sample:</span>
-                <span>{samplePrice === 0 ? 'FREE' : `Rs. ${samplePrice}`}</span>
+            {/* Pricing Summary & Cashback Notice Banner */}
+            <div className="bg-amber-50 border border-amber-200 p-3.5 rounded-2xl text-xs space-y-2">
+              <div className="flex justify-between items-center text-amber-950 font-extrabold text-sm">
+                <span>Sample Fee (Cash on Delivery):</span>
+                <span className="text-gentora-emerald font-bold">PKR 150</span>
               </div>
-              <div className="flex justify-between items-center text-amber-800 text-[11px]">
-                <span>Courier / Shipping Charge (COD):</span>
-                <span>Rs. {courierFee}</span>
-              </div>
-              <div className="flex justify-between items-center pt-1 border-t border-amber-200 text-amber-950 font-extrabold">
-                <span>Total Amount Payable on Delivery:</span>
-                <span className="text-gentora-emerald text-sm">Rs. {totalAmount}</span>
-              </div>
+              <p className="text-[11px] text-amber-900 leading-relaxed pt-1 border-t border-amber-200 font-medium">
+                <span className="font-bold">Notice:</span> Sample Fee: PKR 150 (Cash on Delivery). If you purchase the same fabric after receiving the sample, the PKR 150 sample fee will be deducted from your final order.
+              </p>
             </div>
 
             {errorMsg && (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Truck, Banknote, CheckCircle2, Lock } from 'lucide-react';
+import { ShieldCheck, Truck, Banknote, CheckCircle2, Lock, Sparkles } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import API from '../../api/axios';
@@ -31,6 +31,27 @@ const CheckoutPage = () => {
 
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Fabric Sample Fee Credit Discount State
+  const [sampleDiscount, setSampleDiscount] = useState(0);
+  const [eligibleSampleDiscounts, setEligibleSampleDiscounts] = useState([]);
+
+  useEffect(() => {
+    if ((formData.phone || formData.email) && cartItems.length > 0) {
+      API.post('/sample-requests/check-discount', {
+        items: cartItems.map((it) => ({ productId: it.productId, product: it.productId })),
+        phone: formData.phone,
+        email: formData.email,
+      })
+        .then((res) => {
+          if (res.success && res.data) {
+            setSampleDiscount(res.data.totalDiscount || 0);
+            setEligibleSampleDiscounts(res.data.eligibleDiscounts || []);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [formData.phone, formData.email, cartItems]);
 
   // Update formData when user signs in
   useEffect(() => {
@@ -66,7 +87,7 @@ const CheckoutPage = () => {
   };
 
   const shippingFee = subtotal >= 5000 || subtotal === 0 ? 0 : 250;
-  const grandTotal = subtotal + shippingFee;
+  const grandTotal = Math.max(0, subtotal + shippingFee - sampleDiscount);
 
   const pakistaniCities = [
     'Lahore', 'Karachi', 'Islamabad', 'Rawalpindi', 'Faisalabad', 'Multan',
@@ -409,7 +430,28 @@ const CheckoutPage = () => {
                   {shippingFee === 0 ? <span className="text-emerald-600 font-bold">FREE</span> : `Rs. ${shippingFee}`}
                 </span>
               </div>
+              {sampleDiscount > 0 && (
+                <div className="flex justify-between text-emerald-700 font-bold">
+                  <span>Fabric Sample Credit (Deducted)</span>
+                  <span>- Rs. {sampleDiscount.toLocaleString()}</span>
+                </div>
+              )}
             </div>
+
+            {sampleDiscount > 0 && (
+              <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs space-y-1">
+                <div className="flex justify-between items-center font-bold text-amber-950">
+                  <span className="flex items-center gap-1.5 text-amber-900">
+                    <Sparkles className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                    <span>Sample Fee Credit Applied!</span>
+                  </span>
+                  <span className="text-emerald-700 font-extrabold">- Rs. {sampleDiscount}</span>
+                </div>
+                <p className="text-[10px] text-amber-900 leading-snug font-medium">
+                  Your PKR 150 swatch sample fee is automatically deducted from your final order total.
+                </p>
+              </div>
+            )}
 
             <div className="border-t border-slate-200 pt-3 flex justify-between items-baseline">
               <span className="font-bold text-sm text-slate-900">Total Payable</span>

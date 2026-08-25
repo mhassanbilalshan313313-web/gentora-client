@@ -356,16 +356,25 @@ const ProductDetailPage = () => {
               </button>
             )}
 
-            {/* Fabric Swatch Sample Request CTA */}
+            {/* Fabric Swatch Sample Request CTA & Cashback Notice */}
             {sampleConfig?.sampleRequestEnabled !== false && (
-              <button
-                type="button"
-                onClick={() => setShowSampleModal(true)}
-                className="w-full py-3 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 font-bold text-xs uppercase tracking-wider rounded-xl transition flex items-center justify-center gap-2 shadow-sm"
-              >
-                <Scissors className="w-4 h-4 text-amber-700" />
-                <span>Order Fabric Swatch Sample ({sampleConfig?.samplePrice === 0 ? 'Free Swatch' : `Rs. ${sampleConfig?.samplePrice}`} + Rs. {sampleConfig?.sampleCourierFee !== undefined ? sampleConfig.sampleCourierFee : 150} COD)</span>
-              </button>
+              <div className="space-y-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setShowSampleModal(true)}
+                  className="w-full py-3.5 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 font-bold text-xs uppercase tracking-wider rounded-xl transition flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <Scissors className="w-4 h-4 text-amber-700" />
+                  <span>Order Fabric Swatch Sample (PKR 150 COD)</span>
+                </button>
+                <div className="p-3 bg-amber-50/80 border border-amber-200 rounded-xl text-[11px] text-amber-950 leading-relaxed font-medium flex items-start gap-2">
+                  <Scissors className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold block text-amber-900">Sample Fee: PKR 150 (Cash on Delivery)</span>
+                    <span>If you purchase the same fabric after receiving the sample, the PKR 150 sample fee will be deducted from your final order.</span>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
 

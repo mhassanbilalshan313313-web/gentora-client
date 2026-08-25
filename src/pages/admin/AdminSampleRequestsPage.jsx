@@ -21,13 +21,17 @@ import {
   X,
   FileText,
   ExternalLink,
+  Sparkles,
+  Link as LinkIcon,
 } from 'lucide-react';
 import API from '../../api/axios';
 import { getImageUrl } from '../../utils/imageUtils';
 
 const STATUS_COLOR_MAP = {
   Pending: 'bg-amber-100 text-amber-800 border-amber-300',
+  Approved: 'bg-indigo-100 text-indigo-800 border-indigo-300',
   Processing: 'bg-blue-100 text-blue-800 border-blue-300',
+  Shipped: 'bg-purple-100 text-purple-800 border-purple-300',
   Dispatched: 'bg-purple-100 text-purple-800 border-purple-300',
   Delivered: 'bg-emerald-100 text-emerald-800 border-emerald-300',
   Cancelled: 'bg-rose-100 text-rose-800 border-rose-300',
@@ -35,7 +39,7 @@ const STATUS_COLOR_MAP = {
 
 const AdminSampleRequestsPage = () => {
   const [requests, setRequests] = useState([]);
-  const [counts, setCounts] = useState({ total: 0, pending: 0, processing: 0, dispatched: 0, delivered: 0, cancelled: 0 });
+  const [counts, setCounts] = useState({ total: 0, pending: 0, approved: 0, processing: 0, shipped: 0, delivered: 0, cancelled: 0, discountApplied: 0 });
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -139,7 +143,7 @@ const AdminSampleRequestsPage = () => {
             <Scissors className="w-6 h-6 text-gentora-emerald" /> Fabric Sample Requests Manager
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            View, track, dispatch, and manage physical fabric swatch requests submitted by customers.
+            View, track, approve, ship, and manage PKR 150 sample requests & auto-deduction discount credits.
           </p>
         </div>
         <button
@@ -152,9 +156,9 @@ const AdminSampleRequestsPage = () => {
       </div>
 
       {/* Summary Metrics Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
         <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm text-center">
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Requests</span>
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total</span>
           <span className="text-2xl font-extrabold text-slate-900">{counts.total || 0}</span>
         </div>
 
@@ -163,14 +167,14 @@ const AdminSampleRequestsPage = () => {
           <span className="text-2xl font-extrabold text-amber-900">{counts.pending || 0}</span>
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-2xl border border-blue-200 shadow-sm text-center">
-          <span className="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">Processing</span>
-          <span className="text-2xl font-extrabold text-blue-900">{counts.processing || 0}</span>
+        <div className="bg-indigo-50 p-4 rounded-2xl border border-indigo-200 shadow-sm text-center">
+          <span className="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Approved</span>
+          <span className="text-2xl font-extrabold text-indigo-900">{counts.approved || 0}</span>
         </div>
 
         <div className="bg-purple-50 p-4 rounded-2xl border border-purple-200 shadow-sm text-center">
-          <span className="text-[10px] font-bold text-purple-700 uppercase tracking-wider block">Dispatched</span>
-          <span className="text-2xl font-extrabold text-purple-900">{counts.dispatched || 0}</span>
+          <span className="text-[10px] font-bold text-purple-700 uppercase tracking-wider block">Shipped</span>
+          <span className="text-2xl font-extrabold text-purple-900">{counts.shipped || 0}</span>
         </div>
 
         <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-200 shadow-sm text-center">
@@ -182,6 +186,11 @@ const AdminSampleRequestsPage = () => {
           <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider block">Cancelled</span>
           <span className="text-2xl font-extrabold text-rose-900">{counts.cancelled || 0}</span>
         </div>
+
+        <div className="bg-amber-100/60 p-4 rounded-2xl border border-amber-300 shadow-sm text-center col-span-2 sm:col-span-1">
+          <span className="text-[10px] font-bold text-amber-950 uppercase tracking-wider block">Credits Redeemed</span>
+          <span className="text-2xl font-extrabold text-amber-950">{counts.discountApplied || 0}</span>
+        </div>
       </div>
 
       {/* Filter Tabs & Search Bar */}
@@ -191,8 +200,9 @@ const AdminSampleRequestsPage = () => {
           {[
             { label: 'All Statuses', value: '' },
             { label: 'Pending', value: 'Pending' },
+            { label: 'Approved', value: 'Approved' },
             { label: 'Processing', value: 'Processing' },
-            { label: 'Dispatched', value: 'Dispatched' },
+            { label: 'Shipped', value: 'Shipped' },
             { label: 'Delivered', value: 'Delivered' },
             { label: 'Cancelled', value: 'Cancelled' },
           ].map((tab) => (
@@ -220,7 +230,7 @@ const AdminSampleRequestsPage = () => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search ID, customer, city..."
+            placeholder="Search ID, customer, order #..."
             className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 outline-none focus:border-gentora-emerald"
           />
         </form>
@@ -248,8 +258,8 @@ const AdminSampleRequestsPage = () => {
                   <th className="p-4">Customer Details</th>
                   <th className="p-4">Product Fabric</th>
                   <th className="p-4">City / Address</th>
-                  <th className="p-4">COD Fee</th>
-                  <th className="p-4">Date</th>
+                  <th className="p-4">Sample Fee</th>
+                  <th className="p-4">Discount Status</th>
                   <th className="p-4">Status</th>
                   <th className="p-4 text-right">Actions</th>
                 </tr>
@@ -259,6 +269,9 @@ const AdminSampleRequestsPage = () => {
                   <tr key={reqItem._id} className="hover:bg-slate-50/80 transition">
                     <td className="p-4 font-mono font-bold text-gentora-emerald">
                       {reqItem.requestId}
+                      <span className="text-[10px] text-slate-400 block font-normal">
+                        {new Date(reqItem.createdAt).toLocaleDateString('en-PK', { month: 'short', day: 'numeric' })}
+                      </span>
                     </td>
 
                     <td className="p-4">
@@ -293,15 +306,26 @@ const AdminSampleRequestsPage = () => {
                     </td>
 
                     <td className="p-4 font-bold text-slate-900">
-                      Rs. {(reqItem.totalAmount || 150).toLocaleString()}
+                      PKR 150 (COD)
                     </td>
 
-                    <td className="p-4 text-slate-500 text-[11px]">
-                      {new Date(reqItem.createdAt).toLocaleDateString('en-PK', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
+                    <td className="p-4">
+                      {reqItem.discountApplied ? (
+                        <div>
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 block mb-0.5">
+                            🎉 Redeemed (PKR 150)
+                          </span>
+                          <span className="text-[10px] font-mono font-bold text-slate-700 block">
+                            Order: {reqItem.linkedOrderNumber || 'GT-2026-XXXX'}
+                          </span>
+                        </div>
+                      ) : reqItem.discountEligible !== false ? (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 block">
+                          🌟 Eligible (PKR 150 Credit)
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-slate-400">Not Eligible</span>
+                      )}
                     </td>
 
                     <td className="p-4">
@@ -393,6 +417,30 @@ const AdminSampleRequestsPage = () => {
                 </div>
               )}
 
+              {/* Discount Cashback Status Pill */}
+              <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 flex items-center justify-between">
+                <div>
+                  <h4 className="font-bold text-amber-950 flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-amber-600" />
+                    <span>Fabric Sample Fee Credit Status</span>
+                  </h4>
+                  <p className="text-[11px] text-amber-900 mt-0.5">
+                    {selectedRequest.discountApplied
+                      ? `PKR 150 credit redeemed on order #${selectedRequest.linkedOrderNumber || 'GT-2026'}`
+                      : 'Eligible for PKR 150 discount deduction on future fabric purchase'}
+                  </p>
+                </div>
+                {selectedRequest.discountApplied ? (
+                  <span className="px-3 py-1 bg-emerald-600 text-white font-bold text-[10px] rounded-full uppercase">
+                    Redeemed
+                  </span>
+                ) : (
+                  <span className="px-3 py-1 bg-amber-600 text-white font-bold text-[10px] rounded-full uppercase">
+                    Eligible Credit
+                  </span>
+                )}
+              </div>
+
               {/* Grid 1: Customer & Delivery Info */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
@@ -459,8 +507,8 @@ const AdminSampleRequestsPage = () => {
                     <p className="text-slate-400">SKU: <span className="font-mono font-bold text-slate-700">{selectedRequest.productSku}</span></p>
                   </div>
                   <div className="text-right">
-                    <span className="text-[10px] text-slate-400 block uppercase font-bold">COD Total</span>
-                    <span className="text-lg font-extrabold text-gentora-emerald">Rs. {(selectedRequest.totalAmount || 150).toLocaleString()}</span>
+                    <span className="text-[10px] text-slate-400 block uppercase font-bold">Sample Fee (COD)</span>
+                    <span className="text-lg font-extrabold text-gentora-emerald">PKR 150</span>
                   </div>
                 </div>
               </div>
@@ -468,7 +516,7 @@ const AdminSampleRequestsPage = () => {
               {/* Form 3: Status & Tracking Updater Form */}
               <form onSubmit={handleUpdateStatusSubmit} className="bg-amber-50/60 border border-amber-200 p-5 rounded-2xl space-y-4">
                 <h3 className="font-serif text-sm font-bold text-amber-950 border-b border-amber-200 pb-2 flex items-center gap-2">
-                  <Truck className="w-4 h-4 text-amber-800" /> Update Dispatch & Status
+                  <Truck className="w-4 h-4 text-amber-800" /> Update Request Status & Courier Tracking
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -480,15 +528,16 @@ const AdminSampleRequestsPage = () => {
                       className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl outline-none font-bold text-xs"
                     >
                       <option value="Pending">Pending (Received)</option>
+                      <option value="Approved">Approved (Confirmed)</option>
                       <option value="Processing">Processing (Preparing Swatch)</option>
-                      <option value="Dispatched">Dispatched (Sent via Courier)</option>
+                      <option value="Shipped">Shipped / Dispatched</option>
                       <option value="Delivered">Delivered (Customer Received)</option>
                       <option value="Cancelled">Cancelled</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="font-bold text-slate-800 block mb-1">Courier Tracking Code (e.g. TCS / Leopards)</label>
+                    <label className="font-bold text-slate-800 block mb-1">Courier Tracking Code</label>
                     <input
                       type="text"
                       value={editTracking}
@@ -500,7 +549,7 @@ const AdminSampleRequestsPage = () => {
                 </div>
 
                 <div>
-                  <label className="font-bold text-slate-800 block mb-1">Internal Staff Notes</label>
+                  <label className="font-bold text-slate-800 block mb-1">Internal Admin / Staff Notes</label>
                   <textarea
                     rows={2}
                     value={editAdminNotes}
