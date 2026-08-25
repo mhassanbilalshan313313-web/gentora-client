@@ -35,6 +35,23 @@ const CheckoutPage = () => {
   // Fabric Sample Fee Credit Discount State
   const [sampleDiscount, setSampleDiscount] = useState(0);
   const [eligibleSampleDiscounts, setEligibleSampleDiscounts] = useState([]);
+  const [adminShippingFee, setAdminShippingFee] = useState(250);
+  const [freeShippingThreshold, setFreeShippingThreshold] = useState(5000);
+
+  useEffect(() => {
+    API.get('/settings')
+      .then((res) => {
+        if (res.success && res.data) {
+          if (res.data.shippingFee !== undefined) {
+            setAdminShippingFee(Number(res.data.shippingFee));
+          }
+          if (res.data.freeShippingThreshold !== undefined) {
+            setFreeShippingThreshold(Number(res.data.freeShippingThreshold));
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if ((formData.phone || formData.email) && cartItems.length > 0) {
@@ -86,8 +103,8 @@ const CheckoutPage = () => {
     }
   };
 
-  const shippingFee = subtotal >= 5000 || subtotal === 0 ? 0 : 250;
-  const grandTotal = Math.max(0, subtotal + shippingFee - sampleDiscount);
+  const activeShippingFee = subtotal === 0 ? 0 : (subtotal >= freeShippingThreshold ? 0 : adminShippingFee);
+  const grandTotal = Math.max(0, subtotal + activeShippingFee - sampleDiscount);
 
   const pakistaniCities = [
     'Lahore', 'Karachi', 'Islamabad', 'Rawalpindi', 'Faisalabad', 'Multan',
@@ -427,7 +444,7 @@ const CheckoutPage = () => {
               <div className="flex justify-between text-slate-600">
                 <span>Nationwide Shipping</span>
                 <span className="font-bold text-slate-800">
-                  {shippingFee === 0 ? <span className="text-emerald-600 font-bold">FREE</span> : `Rs. ${shippingFee}`}
+                  {activeShippingFee === 0 ? <span className="text-emerald-600 font-bold">FREE</span> : `Rs. ${activeShippingFee.toLocaleString()}`}
                 </span>
               </div>
               {sampleDiscount > 0 && (

@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, ShoppingBag, ArrowRight, ShieldCheck, Truck } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import API from '../../api/axios';
 
 const CartPage = () => {
   const navigate = useNavigate();
   const { cartItems, subtotal, updateQuantity, removeFromCart, clearCart } = useCart();
 
-  const shippingFee = subtotal >= 5000 || subtotal === 0 ? 0 : 250;
-  const grandTotal = subtotal + shippingFee;
+  const [adminShippingFee, setAdminShippingFee] = useState(250);
+
+  useEffect(() => {
+    API.get('/settings')
+      .then((res) => {
+        if (res.success && res.data && res.data.shippingFee !== undefined) {
+          setAdminShippingFee(Number(res.data.shippingFee));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const activeShippingFee = subtotal === 0 ? 0 : adminShippingFee;
+  const grandTotal = subtotal + activeShippingFee;
 
   if (cartItems.length === 0) {
     return (
@@ -128,14 +141,9 @@ const CartPage = () => {
               <div className="flex justify-between text-slate-600">
                 <span>Shipping Fee (COD)</span>
                 <span className="font-bold text-slate-800">
-                  {shippingFee === 0 ? <span className="text-emerald-600">FREE</span> : `Rs. ${shippingFee}`}
+                  {activeShippingFee === 0 ? <span className="text-emerald-600 font-bold">FREE</span> : `Rs. ${activeShippingFee.toLocaleString()}`}
                 </span>
               </div>
-              {subtotal < 5000 && (
-                <p className="text-[11px] text-amber-700 bg-amber-50 p-2 rounded border border-amber-200">
-                  Add Rs. {(5000 - subtotal).toLocaleString()} more to your order for FREE Express Delivery across Pakistan!
-                </p>
-              )}
             </div>
 
             <div className="border-t border-slate-200 pt-3 flex justify-between items-baseline">
