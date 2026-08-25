@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Save, CheckCircle2, Upload, Trash2, Image as ImageIcon, RefreshCw, AlertCircle, Plus, Edit3, Eye, EyeOff, X, Sliders, Globe, Phone, Mail, Megaphone, Share2, ChevronUp, ChevronDown, ArrowUp, ArrowDown, Palette, Sparkles, Crop } from 'lucide-react';
+import { Settings, Save, CheckCircle2, Upload, Trash2, Image as ImageIcon, RefreshCw, AlertCircle, Plus, Edit3, Eye, EyeOff, X, Sliders, Globe, Phone, Mail, Megaphone, Share2, ChevronUp, ChevronDown, ArrowUp, ArrowDown, Palette, Sparkles, Crop, Scissors } from 'lucide-react';
 import API from '../../api/axios';
 import { getImageUrl } from '../../utils/imageUtils';
 import HeroImageEditorModal from '../../components/admin/HeroImageEditorModal';
@@ -63,6 +63,11 @@ const AdminSettingsPage = () => {
     promoBannerBtnLink: '/shop?isSale=true',
     promoBannerImageUrl: '/uploads/settings/default-promo.png',
     promoBannerActive: true,
+    sampleRequestEnabled: true,
+    samplePrice: 0,
+    sampleCourierFee: 150,
+    maxSamplesPerCustomer: 3,
+    sampleRequestBannerText: 'Touch & Feel the Quality! Order a physical fabric swatch sample delivered to your doorstep.',
   });
 
   const [saving, setSaving] = useState(false);
@@ -781,6 +786,90 @@ const AdminSettingsPage = () => {
               className="w-full px-3 py-2 border rounded-xl outline-none"
             />
           </div>
+        </div>
+      </div>
+
+      {/* CARD: FABRIC SAMPLE REQUEST CONFIGURATION */}
+      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-3 gap-3">
+          <div>
+            <h2 className="font-serif text-base font-bold text-slate-900 flex items-center gap-2">
+              <Scissors className="w-5 h-5 text-gentora-emerald" /> Fabric Sample Request Configuration
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Control physical fabric swatch requests on product pages, pricing, delivery fee, and customer limit.
+            </p>
+          </div>
+          <label className="flex items-center gap-2 cursor-pointer bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 self-start sm:self-auto">
+            <span className="text-xs font-bold text-slate-700">Feature Active</span>
+            <input
+              type="checkbox"
+              checked={form.sampleRequestEnabled !== false}
+              onChange={(e) => setForm({ ...form, sampleRequestEnabled: e.target.checked })}
+              className="w-4 h-4 text-gentora-emerald rounded focus:ring-gentora-emerald cursor-pointer"
+            />
+          </label>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+          <div>
+            <label className="font-bold text-slate-700 block mb-1">
+              Sample Swatch Price (Rs.)
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={form.samplePrice}
+              onChange={(e) => setForm({ ...form, samplePrice: Number(e.target.value) })}
+              placeholder="0 for Free Sample"
+              className="w-full px-3 py-2 border rounded-xl outline-none font-bold"
+            />
+            <span className="text-[10px] text-slate-400 mt-0.5 block">Enter 0 for free physical swatches</span>
+          </div>
+
+          <div>
+            <label className="font-bold text-slate-700 block mb-1">
+              Courier Shipping Charge (Rs.)
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={form.sampleCourierFee}
+              onChange={(e) => setForm({ ...form, sampleCourierFee: Number(e.target.value) })}
+              placeholder="150"
+              className="w-full px-3 py-2 border rounded-xl outline-none font-bold text-gentora-emerald"
+            />
+            <span className="text-[10px] text-slate-400 mt-0.5 block">Standard COD courier delivery charge</span>
+          </div>
+
+          <div>
+            <label className="font-bold text-slate-700 block mb-1">
+              Max Samples Allowed Per Customer
+            </label>
+            <input
+              type="number"
+              min="1"
+              max="10"
+              value={form.maxSamplesPerCustomer}
+              onChange={(e) => setForm({ ...form, maxSamplesPerCustomer: Number(e.target.value) })}
+              placeholder="3"
+              className="w-full px-3 py-2 border rounded-xl outline-none font-bold"
+            />
+            <span className="text-[10px] text-slate-400 mt-0.5 block">Limits requests per phone/email</span>
+          </div>
+        </div>
+
+        <div>
+          <label className="font-bold text-slate-700 block mb-1 text-xs">
+            Sample Request Header / Modal Banner Text
+          </label>
+          <input
+            type="text"
+            value={form.sampleRequestBannerText}
+            onChange={(e) => setForm({ ...form, sampleRequestBannerText: e.target.value })}
+            placeholder="Touch & Feel the Quality! Order a physical fabric swatch sample delivered to your doorstep."
+            className="w-full px-3 py-2 border rounded-xl outline-none text-xs"
+          />
         </div>
       </div>
 

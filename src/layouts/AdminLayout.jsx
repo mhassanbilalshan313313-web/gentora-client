@@ -15,6 +15,7 @@ import {
   Menu,
   X,
   UserCheck,
+  Scissors,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -82,6 +83,7 @@ const AdminLayout = () => {
     { label: 'Categories', path: '/admin/categories', icon: Layers, permission: 'categories.view' },
     { label: 'Inventory', path: '/admin/inventory', icon: Boxes, permission: 'inventory.view' },
     { label: 'Orders', path: '/admin/orders', icon: ShoppingBag, permission: 'orders.view' },
+    { label: 'Sample Requests', path: '/admin/sample-requests', icon: Scissors, permission: 'sample_requests.view' },
     { label: 'Customers', path: '/admin/customers', icon: Users, permission: 'customers.view' },
     { label: 'Staff Users', path: '/admin/users', icon: UserCheck, permission: 'users.view' },
     { label: 'Roles & Permissions', path: '/admin/roles', icon: ShieldCheck, permission: 'roles.view' },

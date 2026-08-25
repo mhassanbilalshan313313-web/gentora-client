@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Heart, ShoppingBag, Check, ShieldCheck, Truck, RotateCcw, ArrowRight, Share2 } from 'lucide-react';
+import { Heart, ShoppingBag, Check, ShieldCheck, Truck, RotateCcw, ArrowRight, Share2, Scissors } from 'lucide-react';
 import ProductCard from '../../components/ProductCard';
+import SampleRequestModal from '../../components/SampleRequestModal';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import API from '../../api/axios';
@@ -24,6 +25,20 @@ const ProductDetailPage = () => {
   const [adding, setAdding] = useState(false);
   const [added, setAdded] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  // Fabric Sample Request State
+  const [showSampleModal, setShowSampleModal] = useState(false);
+  const [sampleConfig, setSampleConfig] = useState(null);
+
+  useEffect(() => {
+    API.get('/sample-requests/config')
+      .then((res) => {
+        if (res.success && res.data) {
+          setSampleConfig(res.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -340,6 +355,18 @@ const ProductDetailPage = () => {
                 <ArrowRight className="w-4 h-4" />
               </button>
             )}
+
+            {/* Fabric Swatch Sample Request CTA */}
+            {sampleConfig?.sampleRequestEnabled !== false && (
+              <button
+                type="button"
+                onClick={() => setShowSampleModal(true)}
+                className="w-full py-3 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 font-bold text-xs uppercase tracking-wider rounded-xl transition flex items-center justify-center gap-2 shadow-sm"
+              >
+                <Scissors className="w-4 h-4 text-amber-700" />
+                <span>Order Fabric Swatch Sample ({sampleConfig?.samplePrice === 0 ? 'Free Swatch' : `Rs. ${sampleConfig?.samplePrice}`} + Rs. {sampleConfig?.sampleCourierFee !== undefined ? sampleConfig.sampleCourierFee : 150} COD)</span>
+              </button>
+            )}
           </div>
 
           {/* Trust Highlights */}
@@ -388,6 +415,14 @@ const ProductDetailPage = () => {
             ))}
           </div>
         </section>
+      )}
+      {/* Sample Request Modal */}
+      {showSampleModal && (
+        <SampleRequestModal
+          product={product}
+          config={sampleConfig}
+          onClose={() => setShowSampleModal(false)}
+        />
       )}
     </div>
   );
