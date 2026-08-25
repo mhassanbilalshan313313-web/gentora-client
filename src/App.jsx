@@ -31,6 +31,7 @@ import AdminUsersPage from './pages/admin/AdminUsersPage';
 import AdminRolesPage from './pages/admin/AdminRolesPage';
 import AdminReportsPage from './pages/admin/AdminReportsPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
+import AdminShippingSettingsPage from './pages/admin/AdminShippingSettingsPage';
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
                 <Route path="users" element={<AdminUsersPage />} />
                 <Route path="roles" element={<AdminRolesPage />} />
                 <Route path="reports" element={<AdminReportsPage />} />
+                <Route path="shipping" element={<AdminShippingSettingsPage />} />
                 <Route path="settings" element={<AdminSettingsPage />} />
               </Route>
 

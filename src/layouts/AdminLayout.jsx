@@ -16,6 +16,7 @@ import {
   X,
   UserCheck,
   Scissors,
+  Truck,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -88,6 +89,7 @@ const AdminLayout = () => {
     { label: 'Staff Users', path: '/admin/users', icon: UserCheck, permission: 'users.view' },
     { label: 'Roles & Permissions', path: '/admin/roles', icon: ShieldCheck, permission: 'roles.view' },
     { label: 'Reports', path: '/admin/reports', icon: BarChart3, permission: 'reports.view' },
+    { label: 'Shipping Settings', path: '/admin/shipping', icon: Truck, permission: 'settings.view' },
     { label: 'Site Settings', path: '/admin/settings', icon: Settings, permission: 'settings.view' },
   ].filter((item) => !item.permission || hasPermission(item.permission));
 

@@ -789,6 +789,46 @@ const AdminSettingsPage = () => {
         </div>
       </div>
 
+      {/* CARD: NATIONWIDE SHIPPING & DELIVERY CHARGES */}
+      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+        <div className="border-b pb-3">
+          <h2 className="font-serif text-base font-bold text-slate-900 flex items-center gap-2">
+            <Truck className="w-5 h-5 text-gentora-emerald" /> Shipping & Delivery Fee Settings
+          </h2>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Configure nationwide Cash on Delivery shipping fee and free shipping order threshold.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div>
+            <label className="font-bold text-slate-700 block mb-1">Standard Shipping Fee (PKR)</label>
+            <input
+              type="number"
+              min="0"
+              value={form.shippingFee}
+              onChange={(e) => setForm({ ...form, shippingFee: Math.max(0, Number(e.target.value)) })}
+              placeholder="e.g. 250"
+              className="w-full px-3 py-2 border rounded-xl outline-none font-bold text-slate-900"
+            />
+            <p className="text-[10px] text-slate-400 mt-1">Applied on orders below the free shipping threshold.</p>
+          </div>
+
+          <div>
+            <label className="font-bold text-slate-700 block mb-1">Free Shipping Order Threshold (PKR)</label>
+            <input
+              type="number"
+              min="0"
+              value={form.freeShippingThreshold}
+              onChange={(e) => setForm({ ...form, freeShippingThreshold: Math.max(0, Number(e.target.value)) })}
+              placeholder="e.g. 5000"
+              className="w-full px-3 py-2 border rounded-xl outline-none font-bold text-slate-900"
+            />
+            <p className="text-[10px] text-slate-400 mt-1">Orders equal to or above this amount get Free Shipping.</p>
+          </div>
+        </div>
+      </div>
+
       {/* CARD: FABRIC SAMPLE REQUEST CONFIGURATION */}
       <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-3 gap-3">

@@ -9,18 +9,24 @@ const CartPage = () => {
   const { cartItems, subtotal, updateQuantity, removeFromCart, clearCart } = useCart();
 
   const [adminShippingFee, setAdminShippingFee] = useState(250);
+  const [freeShippingThreshold, setFreeShippingThreshold] = useState(5000);
 
   useEffect(() => {
     API.get('/settings')
       .then((res) => {
-        if (res.success && res.data && res.data.shippingFee !== undefined) {
-          setAdminShippingFee(Number(res.data.shippingFee));
+        if (res.success && res.data) {
+          if (res.data.shippingFee !== undefined) {
+            setAdminShippingFee(Number(res.data.shippingFee));
+          }
+          if (res.data.freeShippingThreshold !== undefined) {
+            setFreeShippingThreshold(Number(res.data.freeShippingThreshold));
+          }
         }
       })
       .catch(() => {});
   }, []);
 
-  const activeShippingFee = subtotal === 0 ? 0 : adminShippingFee;
+  const activeShippingFee = subtotal === 0 ? 0 : (subtotal >= freeShippingThreshold ? 0 : adminShippingFee);
   const grandTotal = subtotal + activeShippingFee;
 
   if (cartItems.length === 0) {
