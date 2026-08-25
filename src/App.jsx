@@ -33,12 +33,16 @@ import AdminReportsPage from './pages/admin/AdminReportsPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 import AdminShippingSettingsPage from './pages/admin/AdminShippingSettingsPage';
 
+// Utilities & Components
+import ScrollToTop from './components/ScrollToTop';
+
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
         <WishlistProvider>
           <Router>
+            <ScrollToTop />
             <Routes>
               {/* Customer Storefront Routes */}
               <Route path="/" element={<StorefrontLayout />}>
