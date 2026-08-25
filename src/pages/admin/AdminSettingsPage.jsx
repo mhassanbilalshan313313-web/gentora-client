@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Save, CheckCircle2, Upload, Trash2, Image as ImageIcon, RefreshCw, AlertCircle, Plus, Edit3, Eye, EyeOff, X, Sliders, Globe, Phone, Mail, Megaphone, Share2, ChevronUp, ChevronDown, ArrowUp, ArrowDown, Palette, Sparkles, Crop, Scissors } from 'lucide-react';
+import { Settings, Save, CheckCircle2, Upload, Trash2, Image as ImageIcon, RefreshCw, AlertCircle, Plus, Edit3, Eye, EyeOff, X, Sliders, Globe, Phone, Mail, Megaphone, Share2, ChevronUp, ChevronDown, ArrowUp, ArrowDown, Palette, Sparkles, Crop, Scissors, Truck } from 'lucide-react';
 import API from '../../api/axios';
 import { getImageUrl } from '../../utils/imageUtils';
 import HeroImageEditorModal from '../../components/admin/HeroImageEditorModal';
