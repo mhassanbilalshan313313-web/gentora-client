@@ -114,13 +114,31 @@ const AdminSettingsPage = () => {
     API.get('/settings')
       .then((res) => {
         if (res.success && res.data) {
+          const rawSocial = res.data.socialLinks || {};
+          const normalizedSocial = {};
+          const platforms = ['facebook', 'instagram', 'youtube', 'twitter', 'tiktok', 'whatsapp'];
+
+          platforms.forEach((p) => {
+            const item = rawSocial[p];
+            if (typeof item === 'string') {
+              normalizedSocial[p] = { url: item, enabled: true };
+            } else if (item && typeof item === 'object') {
+              normalizedSocial[p] = {
+                url: typeof item.url === 'string' ? item.url : '',
+                enabled: typeof item.enabled === 'boolean' ? item.enabled : true,
+              };
+            } else {
+              normalizedSocial[p] = { url: '', enabled: false };
+            }
+          });
+
           setForm((prev) => ({
             ...prev,
             ...res.data,
             featuredProductId: typeof res.data.featuredProductId === 'object' ? res.data.featuredProductId?._id : (res.data.featuredProductId || ''),
             socialLinks: {
               ...prev.socialLinks,
-              ...(res.data.socialLinks || {}),
+              ...normalizedSocial,
             },
           }));
         }
@@ -345,16 +363,23 @@ const AdminSettingsPage = () => {
 
   // Social Links Handler
   const handleSocialChange = (platform, field, value) => {
-    setForm((prev) => ({
-      ...prev,
-      socialLinks: {
-        ...prev.socialLinks,
-        [platform]: {
-          ...(prev.socialLinks?.[platform] || {}),
-          [field]: value,
+    setForm((prev) => {
+      const existing = prev.socialLinks?.[platform];
+      const currentObj = typeof existing === 'object' && existing !== null
+        ? existing
+        : { url: typeof existing === 'string' ? existing : '', enabled: true };
+
+      return {
+        ...prev,
+        socialLinks: {
+          ...prev.socialLinks,
+          [platform]: {
+            ...currentObj,
+            [field]: value,
+          },
         },
-      },
-    }));
+      };
+    });
   };
 
   // Hero Slide Handlers
