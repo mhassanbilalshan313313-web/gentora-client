@@ -18,7 +18,6 @@ const ProductDetailPage = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [selectedImage, setSelectedImage] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -52,7 +51,6 @@ const ProductDetailPage = () => {
 
           const primary = p.images?.find((img) => img.isPrimary)?.url || p.images?.[0]?.url || '';
           setSelectedImage(getImageUrl(primary));
-          setSelectedColor(p.colors?.[0] || '');
           setSelectedSize(p.sizes?.[0] || '');
 
           // Update Recently Viewed Products in LocalStorage
@@ -112,7 +110,7 @@ const ProductDetailPage = () => {
     if (isOutOfStock) return;
     try {
       setAdding(true);
-      await addToCart(product, quantity, selectedColor, selectedSize);
+      await addToCart(product, quantity, '', selectedSize);
       setAdded(true);
       if (buyNow) {
         navigate('/checkout');
@@ -241,28 +239,6 @@ const ProductDetailPage = () => {
                 {product.fabric}
               </span>
             </div>
-
-            {/* Colors */}
-            {product.colors?.length > 0 && (
-              <div>
-                <span className="text-xs font-bold text-slate-800 block mb-1">Color:</span>
-                <div className="flex flex-wrap gap-2">
-                  {product.colors.map((c) => (
-                    <button
-                      key={c}
-                      onClick={() => setSelectedColor(c)}
-                      className={`text-xs px-3.5 py-2 rounded-lg border font-semibold transition ${
-                        selectedColor === c
-                          ? 'border-gentora-emerald bg-emerald-50 text-gentora-emerald'
-                          : 'border-slate-200 text-slate-700 hover:border-slate-400'
-                      }`}
-                    >
-                      {c}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Sizes */}
             {product.sizes?.length > 0 && (
